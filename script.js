@@ -25,12 +25,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Inicializar referencias a elementos del DOM
 function initializeElements() {
-    elements.header = document.getElementById('main-header');
-    elements.formContainer = document.getElementById('form-container');
+    elements.header = document.getElementById('mainHeader');
+    elements.formContainer = document.getElementById('mainCard');
     elements.resultadosContainer = document.getElementById('resultados-container');
-    elements.errorContainer = document.getElementById('error-container');
-    elements.modal = document.getElementById('whatsapp-modal');
-    elements.modalText = document.getElementById('modal-text');
+    elements.errorContainer = document.getElementById('errorContainer');
+    elements.modal = document.getElementById('whatsappModal');
+    elements.modalText = document.getElementById('textoWhatsApp');
 }
 
 // Inicializar event listeners
@@ -55,27 +55,24 @@ function initializeEventListeners() {
 
 // Función para mostrar errores
 function showError(message) {
-    elements.errorContainer.innerHTML = `
-        <div class="ios-error fade-in">
-            ${message}
-        </div>
-    `;
+    elements.errorContainer.innerHTML = message;
+    elements.errorContainer.style.display = 'block';
     elements.errorContainer.scrollIntoView({ behavior: 'smooth' });
 }
 
 // Función para limpiar errores
 function clearError() {
     elements.errorContainer.innerHTML = '';
+    elements.errorContainer.style.display = 'none';
 }
 
 // Función para actualizar el header
-function updateHeader(isResults = false, title = 'Calculadora de Gastos Compartidos', subtitle = 'Divide gastos de forma fácil y equitativa') {
-    const headerClass = isResults ? 'ios-header resultado-header' : 'ios-header';
+function updateHeader(isResults = false, title = 'División de Cuentas', subtitle = 'Divide gastos de forma fácil y equitativa') {
+    const headerClass = isResults ? 'ios-header resultado-header fade-in' : 'ios-header fade-in';
     elements.header.className = headerClass;
-    elements.header.innerHTML = `
-        <h1 class="ios-title-1 mb-2">${title}</h1>
-        <p class="ios-body">${subtitle}</p>
-    `;
+    
+    document.getElementById('headerTitle').textContent = title;
+    document.getElementById('headerSubtitle').textContent = subtitle;
 }
 
 // Paso 1: Número de personas
@@ -84,34 +81,23 @@ function showStep1() {
     clearError();
     updateHeader();
     
-    elements.formContainer.innerHTML = `
-        <div class="ios-card fade-in">
-            <div class="ios-card-content">
-                <h2 class="ios-title-2 mb-4 text-center">¿Cuántas personas participan?</h2>
-                
-                <div class="ios-form-group">
-                    <label class="ios-label" for="num_personas">Número de personas</label>
-                    <select id="num_personas" class="ios-input ios-select">
-                        <option value="">Selecciona el número de personas</option>
-                        ${Array.from({length: 8}, (_, i) => `<option value="${i + 2}">${i + 2} personas</option>`).join('')}
-                    </select>
-                    <p class="ios-helper-text">Mínimo 2 personas, máximo 9 personas</p>
-                </div>
-                
-                <button type="button" class="ios-button ios-button-primary w-100" onclick="handleStep1()">
-                    Continuar
-                </button>
-            </div>
-        </div>
-    `;
+    // Mostrar la sección inicial y ocultar las demás
+    document.getElementById('seccionInicial').style.display = 'block';
+    document.getElementById('seccionNombres').style.display = 'none';
+    document.getElementById('seccionGastos').style.display = 'none';
+    document.getElementById('resultadosCard').style.display = 'none';
+    document.getElementById('mainCard').style.display = 'block';
+    
+    // Limpiar el selector
+    document.getElementById('numeroPersonas').value = '';
 }
 
 // Manejar el paso 1
 function handleStep1() {
-    const numPersonas = parseInt(document.getElementById('num_personas').value);
+    const numPersonas = parseInt(document.getElementById('numeroPersonas').value);
     
-    if (!numPersonas || numPersonas < 2 || numPersonas > 9) {
-        showError('Por favor selecciona un número válido de personas (entre 2 y 9)');
+    if (!numPersonas || numPersonas < 2 || numPersonas > 10) {
+        showError('Por favor selecciona un número válido de personas (entre 2 y 10)');
         return;
     }
     
@@ -125,34 +111,29 @@ function showStep2() {
     appState.step = 2;
     clearError();
     
-    elements.formContainer.innerHTML = `
-        <div class="ios-card fade-in">
-            <div class="ios-card-content">
-                <h2 class="ios-title-2 mb-4 text-center">Ingresa los nombres</h2>
-                
-                ${appState.personas.map((_, i) => `
-                    <div class="ios-form-group">
-                        <label class="ios-label" for="nombre_${i}">Persona ${i + 1}</label>
-                        <input type="text" 
-                               id="nombre_${i}" 
-                               class="ios-input" 
-                               placeholder="Nombre de la persona ${i + 1}"
-                               value="${appState.personas[i].nombre}"
-                               maxlength="50">
-                    </div>
-                `).join('')}
-                
-                <div class="mt-4">
-                    <button type="button" class="ios-button ios-button-secondary w-100 mb-3" onclick="showStep1()">
-                        ← Volver
-                    </button>
-                    <button type="button" class="ios-button ios-button-primary w-100" onclick="handleStep2()">
-                        Continuar
-                    </button>
-                </div>
-            </div>
-        </div>
-    `;
+    // Mostrar/ocultar secciones
+    document.getElementById('seccionInicial').style.display = 'none';
+    document.getElementById('seccionNombres').style.display = 'block';
+    document.getElementById('seccionGastos').style.display = 'none';
+    
+    // Generar campos de nombres
+    const container = document.getElementById('camposNombres');
+    container.innerHTML = '';
+    
+    for (let i = 0; i < appState.numPersonas; i++) {
+        const div = document.createElement('div');
+        div.className = 'ios-form-group';
+        div.innerHTML = `
+            <label for="nombre_${i}" class="ios-label">Persona ${i + 1}</label>
+            <input type="text" 
+                   id="nombre_${i}" 
+                   class="ios-input" 
+                   placeholder="Nombre de la persona ${i + 1}"
+                   value="${appState.personas[i].nombre}"
+                   maxlength="50">
+        `;
+        container.appendChild(div);
+    }
 }
 
 // Manejar el paso 2
@@ -189,34 +170,18 @@ function showStep3() {
     appState.step = 3;
     clearError();
     
-    elements.formContainer.innerHTML = `
-        <div class="ios-card fade-in">
-            <div class="ios-card-content">
-                <h2 class="ios-title-2 mb-4 text-center">Detalles de los gastos</h2>
-                
-                <div id="gastos-container">
-                    ${createGastoForm(0)}
-                </div>
-                
-                <button type="button" class="ios-button ios-button-secondary w-100 mb-3" onclick="addGasto()">
-                    + Agregar otro gasto
-                </button>
-                
-                <div class="ios-divider"></div>
-                
-                <div class="mt-4">
-                    <button type="button" class="ios-button ios-button-secondary w-100 mb-3" onclick="showStep2()">
-                        ← Volver
-                    </button>
-                    <button type="button" class="ios-button ios-button-primary w-100" onclick="handleStep3()">
-                        Calcular
-                    </button>
-                </div>
-            </div>
-        </div>
-    `;
+    // Mostrar/ocultar secciones
+    document.getElementById('seccionInicial').style.display = 'none';
+    document.getElementById('seccionNombres').style.display = 'none';
+    document.getElementById('seccionGastos').style.display = 'block';
     
-    appState.gastos = [createEmptyGasto()];
+    // Inicializar gastos si está vacío
+    if (appState.gastos.length === 0) {
+        appState.gastos = [createEmptyGasto()];
+    }
+    
+    // Generar el contenedor de gastos
+    refreshGastosContainer();
 }
 
 // Crear un gasto vacío
@@ -319,7 +284,7 @@ function removeGasto(index) {
 
 // Refrescar el container de gastos
 function refreshGastosContainer() {
-    const container = document.getElementById('gastos-container');
+    const container = document.getElementById('gastosContainer');
     container.innerHTML = appState.gastos.map((_, index) => createGastoForm(index)).join('');
 }
 
@@ -392,95 +357,95 @@ function calcularYMostrarResultados() {
     
     updateHeader(true, 'Resultados del Cálculo', 'Aquí están los balances y transferencias necesarias');
     
-    elements.formContainer.style.display = 'none';
-    elements.resultadosContainer.style.display = 'block';
-    elements.resultadosContainer.className = 'fade-in';
+    // Ocultar formulario y mostrar resultados
+    document.getElementById('mainCard').style.display = 'none';
+    document.getElementById('resultadosCard').style.display = 'block';
     
-    elements.resultadosContainer.innerHTML = `
-        <div class="ios-success">
-            Cálculo completado exitosamente
+    // Llenar resumen general
+    document.getElementById('resumenGeneral').innerHTML = `
+        <div class="resultado-card">
+            <p class="ios-headline">$${totalGastado.toFixed(2)}</p>
+            <p class="ios-footnote">Total gastado</p>
         </div>
-        
-        <div class="resumen-general">
-            <div class="resultado-card">
-                <p class="ios-headline">$${totalGastado.toFixed(2)}</p>
-                <p class="ios-footnote">Total gastado</p>
-            </div>
-            <div class="resultado-card">
-                <p class="ios-headline">$${promedioPersona.toFixed(2)}</p>
-                <p class="ios-footnote">Por persona</p>
-            </div>
-        </div>
-        
-        ${transferencias.length > 0 ? `
-            <div class="transfers-section">
-                <h3 class="transfers-title">
-                    💸 Transferencias necesarias
-                </h3>
-                ${transferencias.map(transferencia => `
-                    <div class="movimiento-card">
-                        <strong>${appState.personas[transferencia.deudor].nombre}</strong> debe transferir 
-                        <strong>$${transferencia.monto.toFixed(2)}</strong> a 
-                        <strong>${appState.personas[transferencia.acreedor].nombre}</strong>
-                    </div>
-                `).join('')}
-            </div>
-        ` : `
-            <div class="ios-success">
-                ¡Perfecto! Todas las cuentas están equilibradas.
-            </div>
-        `}
-        
-        <div class="details-section">
-            <div class="details-toggle" onclick="toggleDetails()">
-                <span class="details-toggle-text">Ver detalles del balance</span>
-                <span class="details-toggle-icon">▼</span>
-            </div>
-            <div class="details-content" id="details-content">
-                ${balances.map((balance, index) => `
-                    <div class="balance-card-expanded">
-                        <div class="balance-card-header">
-                            <h4 class="balance-card-title">${appState.personas[index].nombre}</h4>
-                        </div>
-                        <div class="balance-details">
-                            <div class="balance-item">
-                                <span class="balance-label">Total pagado:</span>
-                                <span class="balance-value">$${balance.totalPagado.toFixed(2)}</span>
-                            </div>
-                            <div class="balance-item">
-                                <span class="balance-label">Debe pagar:</span>
-                                <span class="balance-value">$${balance.debePagar.toFixed(2)}</span>
-                            </div>
-                            <div class="balance-item">
-                                <span class="balance-label">Balance final:</span>
-                                <span class="balance-value ${balance.balance > 0 ? 'text-success' : balance.balance < 0 ? 'text-error' : ''}">
-                                    $${balance.balance.toFixed(2)}
-                                </span>
-                            </div>
-                        </div>
-                        
-                        ${balance.gastosDetalle.length > 0 ? `
-                            <div class="mt-3">
-                                <p class="ios-footnote mb-2">Gastos en los que participó:</p>
-                                ${balance.gastosDetalle.map(gasto => `
-                                    <span class="concept-tag">${gasto.concepto}: $${gasto.montoPersonal.toFixed(2)}</span>
-                                `).join(' ')}
-                            </div>
-                        ` : ''}
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-        
-        <div class="mt-4">
-            <button type="button" class="ios-button ios-button-primary w-100 mb-3" onclick="shareWhatsApp()">
-                📱 Compartir por WhatsApp
-            </button>
-            <button type="button" class="ios-button ios-button-secondary w-100" onclick="nuevaCalculacion()">
-                🔄 Nueva Calculación
-            </button>
+        <div class="resultado-card">
+            <p class="ios-headline">$${promedioPersona.toFixed(2)}</p>
+            <p class="ios-footnote">Por persona</p>
         </div>
     `;
+    
+    // Llenar sección de transferencias
+    const transferenciasHtml = transferencias.length > 0 ? `
+        <h3 class="transfers-title">
+            💸 Transferencias necesarias
+        </h3>
+        ${transferencias.map(transferencia => `
+            <div class="movimiento-card">
+                <strong>${appState.personas[transferencia.deudor].nombre}</strong> debe transferir 
+                <strong>$${transferencia.monto.toFixed(2)}</strong> a 
+                <strong>${appState.personas[transferencia.acreedor].nombre}</strong>
+            </div>
+        `).join('')}
+    ` : `
+        <h3 class="transfers-title">
+            ✅ Estado de Cuentas
+        </h3>
+        <div class="ios-success">
+            ¡Perfecto! Todas las cuentas están equilibradas.
+        </div>
+    `;
+    
+    document.getElementById('transferenciasSection').innerHTML = transferenciasHtml;
+    
+    // Llenar balances
+    const balancesHtml = balances.map((balance, index) => `
+        <div class="balance-card">
+            <div class="balance-info">
+                <span class="balance-name">${appState.personas[index].nombre}</span>
+                <span class="balance-amount">Pagó: $${balance.totalPagado.toFixed(2)}</span>
+            </div>
+            <span class="balance-status ${balance.balance > 0.01 ? 'creditor' : balance.balance < -0.01 ? 'debtor' : 'balanced'}">
+                ${balance.balance > 0.01 ? '+' : ''}$${Math.abs(balance.balance).toFixed(2)}
+            </span>
+        </div>
+    `).join('');
+    
+    document.getElementById('balancesContainer').innerHTML = balancesHtml;
+    
+    // Llenar detalles expandibles
+    const detallesHtml = balances.map((balance, index) => `
+        <div class="balance-card-expanded">
+            <div class="balance-card-header">
+                <h4 class="balance-card-title">${appState.personas[index].nombre}</h4>
+            </div>
+            <div class="balance-details">
+                <div class="balance-item">
+                    <span class="balance-label">Total pagado:</span>
+                    <span class="balance-value">$${balance.totalPagado.toFixed(2)}</span>
+                </div>
+                <div class="balance-item">
+                    <span class="balance-label">Debe pagar:</span>
+                    <span class="balance-value">$${balance.debePagar.toFixed(2)}</span>
+                </div>
+                <div class="balance-item">
+                    <span class="balance-label">Balance final:</span>
+                    <span class="balance-value ${balance.balance > 0 ? 'text-success' : balance.balance < 0 ? 'text-error' : ''}">
+                        $${balance.balance.toFixed(2)}
+                    </span>
+                </div>
+            </div>
+            
+            ${balance.gastosDetalle.length > 0 ? `
+                <div class="mt-3">
+                    <p class="ios-footnote mb-2">Gastos en los que participó:</p>
+                    ${balance.gastosDetalle.map(gasto => `
+                        <span class="concept-tag">${gasto.concepto}: $${gasto.montoPersonal.toFixed(2)}</span>
+                    `).join(' ')}
+                </div>
+            ` : ''}
+        </div>
+    `).join('');
+    
+    document.getElementById('detailsContent').innerHTML = detallesHtml;
 }
 
 // Función para calcular balances
@@ -580,10 +545,21 @@ function calcularTransferencias(balances) {
 // Toggle detalles
 function toggleDetails() {
     const toggle = document.querySelector('.details-toggle');
-    const content = document.getElementById('details-content');
+    const content = document.getElementById('detailsContent');
+    const icon = document.querySelector('.details-toggle-icon');
+    const text = document.querySelector('.details-toggle-text');
     
-    toggle.classList.toggle('expanded');
-    content.classList.toggle('show');
+    if (content.classList.contains('show')) {
+        content.classList.remove('show');
+        toggle.classList.remove('expanded');
+        text.textContent = '📊 Ver Detalles Completos';
+        icon.textContent = '▼';
+    } else {
+        content.classList.add('show');
+        toggle.classList.add('expanded');
+        text.textContent = '📊 Ocultar Detalles';
+        icon.textContent = '▲';
+    }
 }
 
 // Nueva calculación

@@ -42,16 +42,11 @@
                                 <option value="8">8 personas</option>
                                 <option value="9">9 personas</option>
                                 <option value="10">10 personas</option>
-                                <option value="11">11 personas</option>
-                                <option value="12">12 personas</option>
-                                <option value="13">13 personas</option>
-                                <option value="14">14 personas</option>
-                                <option value="15">15 personas</option>
                             </select>
-                            <div class="ios-helper-text">Mínimo 2 personas, máximo 15</div>
+                            <div class="ios-helper-text">Mínimo 2 personas, máximo 10</div>
                         </div>
 
-                        <button type="button" class="ios-button ios-button-primary w-100" onclick="mostrarNombres()">
+                        <button type="button" class="ios-button ios-button-primary w-100" onclick="handleStep1()">
                             Siguiente →
                         </button>
                     </div>
@@ -67,21 +62,37 @@
                             Los nombres aparecerán en el siguiente paso para ingresar los montos
                         </div>
 
-                        <button type="button" class="ios-button ios-button-primary w-100" onclick="mostrarMontos()">
-                            Continuar con Montos →
-                        </button>
+                        <div class="mt-4">
+                            <button type="button" class="ios-button ios-button-secondary w-100 mb-3" onclick="showStep1()">
+                                ← Volver
+                            </button>
+                            <button type="button" class="ios-button ios-button-primary w-100" onclick="handleStep2()">
+                                Continuar con Montos →
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Paso 3: Ingresar montos -->
-                    <div id="camposPersonas" style="display: none;">
+                    <!-- Paso 3: Ingresar gastos -->
+                    <div id="seccionGastos" style="display: none;">
                         <div class="ios-divider"></div>
                         <h2 class="ios-title-3 mb-4">📊 Registro de Gastos</h2>
                         
-                        <div id="personasContainer"></div>
+                        <div id="gastosContainer"></div>
 
-                        <button type="submit" class="ios-button ios-button-primary w-100">
-                            🧮 Calcular División
+                        <button type="button" class="ios-button ios-button-secondary w-100 mb-3" onclick="addGasto()">
+                            + Agregar otro gasto
                         </button>
+                        
+                        <div class="ios-divider"></div>
+                        
+                        <div class="mt-4">
+                            <button type="button" class="ios-button ios-button-secondary w-100 mb-3" onclick="showStep2()">
+                                ← Volver
+                            </button>
+                            <button type="button" class="ios-button ios-button-primary w-100" onclick="handleStep3()">
+                                🧮 Calcular División
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -124,10 +135,10 @@
 
                 <!-- Botón para compartir por WhatsApp -->
                 <div class="text-center mt-4">
-                    <button type="button" class="ios-button ios-button-primary mb-3" onclick="abrirWhatsApp()">
+                    <button type="button" class="ios-button ios-button-primary mb-3" onclick="openWhatsApp()">
                         📱 Abrir WhatsApp
                     </button>
-                    <button type="button" class="ios-button ios-button-secondary mb-3" onclick="generarTextoWhatsApp()">
+                    <button type="button" class="ios-button ios-button-secondary mb-3" onclick="shareWhatsApp()">
                         📋 Ver/Copiar Texto
                     </button>
                     <br>
@@ -144,16 +155,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>📱 Resumen para WhatsApp</h3>
-                <button type="button" class="close-modal" onclick="cerrarModalWhatsApp()">&times;</button>
+                <button type="button" class="close-modal" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <p class="text-sm text-gray-600 mb-3">Copia este texto y compártelo por WhatsApp:</p>
                 <textarea id="textoWhatsApp" readonly></textarea>
                 <div class="modal-actions">
-                    <button type="button" class="ios-button ios-button-primary" onclick="copiarTextoWhatsApp()">
+                    <button type="button" class="ios-button ios-button-primary" onclick="copyText()">
                         📋 Copiar Texto
                     </button>
-                    <button type="button" class="ios-button ios-button-secondary" onclick="cerrarModalWhatsApp()">
+                    <button type="button" class="ios-button ios-button-secondary" onclick="closeModal()">
                         Cerrar
                     </button>
                 </div>
