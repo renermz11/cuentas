@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Gastos Compartidos - División de Cuentas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="ios-container">
+        <!-- Header -->
+        <div class="ios-header fade-in" id="mainHeader">
+            <h1 class="ios-title-1 mb-2" id="headerTitle">
+                División de Cuentas
+            </h1>
+            <p class="ios-body mb-0" id="headerSubtitle">
+                Para yopes que no saben cómo dividir gastos
+            </p>
+        </div>
+
+        <!-- Errores de validación -->
+        <div id="errorContainer" class="ios-error" style="display: none;"></div>
+
+        <!-- Card Principal -->
+        <div class="ios-card fade-in" id="mainCard">
+            <div class="ios-card-content">
+                <form id="calculadoraForm">
+                    
+                    <!-- Paso 1: Número de personas -->
+                    <div id="seccionInicial">
+                        <h2 class="ios-title-3 mb-4">Número de Personas</h2>
+                        
+                        <div class="ios-form-group">
+                            <select class="ios-input ios-select" id="numeroPersonas" required>
+                                <option value="">Selecciona el número</option>
+                                <option value="2">2 personas</option>
+                                <option value="3">3 personas</option>
+                                <option value="4">4 personas</option>
+                                <option value="5">5 personas</option>
+                                <option value="6">6 personas</option>
+                                <option value="7">7 personas</option>
+                                <option value="8">8 personas</option>
+                                <option value="9">9 personas</option>
+                                <option value="10">10 personas</option>
+                                <option value="11">11 personas</option>
+                                <option value="12">12 personas</option>
+                                <option value="13">13 personas</option>
+                                <option value="14">14 personas</option>
+                                <option value="15">15 personas</option>
+                            </select>
+                            <div class="ios-helper-text">Mínimo 2 personas, máximo 15</div>
+                        </div>
+
+                        <button type="button" class="ios-button ios-button-primary w-100" onclick="mostrarNombres()">
+                            Siguiente →
+                        </button>
+                    </div>
+
+                    <!-- Paso 2: Ingresar nombres -->
+                    <div id="seccionNombres" style="display: none;">
+                        <div class="ios-divider"></div>
+                        <h2 class="ios-title-3 mb-4">Registro de Participantes</h2>
+                        
+                        <div id="camposNombres"></div>
+                        
+                        <div class="ios-footnote mb-3" style="color: var(--text-muted);">
+                            Los nombres aparecerán en el siguiente paso para ingresar los montos
+                        </div>
+
+                        <button type="button" class="ios-button ios-button-primary w-100" onclick="mostrarMontos()">
+                            Continuar con Montos →
+                        </button>
+                    </div>
+
+                    <!-- Paso 3: Ingresar montos -->
+                    <div id="camposPersonas" style="display: none;">
+                        <div class="ios-divider"></div>
+                        <h2 class="ios-title-3 mb-4">📊 Registro de Gastos</h2>
+                        
+                        <div id="personasContainer"></div>
+
+                        <button type="submit" class="ios-button ios-button-primary w-100">
+                            🧮 Calcular División
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Resultados -->
+        <div class="ios-card fade-in" style="margin-top: 24px; display: none;" id="resultadosCard">
+            <div class="ios-card-content">
+                <h2 class="text-center ios-title-3 mb-3" style="color: var(--text-primary);">
+                    Resultados 
+                </h2>
+
+                <!-- Resumen General más compacto -->
+                <div class="resumen-general" id="resumenGeneral">
+                    <!-- Se llena dinámicamente -->
+                </div>
+
+                <!-- Transferencias -->
+                <div class="transfers-section" id="transferenciasSection">
+                    <!-- Se llena dinámicamente -->
+                </div>
+
+                <!-- Resumen Compacto de Balances -->
+                <h3 class="ios-headline mb-2">💳 Resumen de Participantes</h3>
+                <div id="balancesContainer">
+                    <!-- Se llena dinámicamente -->
+                </div>
+
+                <!-- Sección de Detalles Expandible -->
+                <div class="details-section">
+                    <div class="details-toggle" onclick="toggleDetails()">
+                        <span class="details-toggle-text">📊 Ver Detalles Completos</span>
+                        <span class="details-toggle-icon">▼</span>
+                    </div>
+                    
+                    <div class="details-content" id="detailsContent">
+                        <!-- Se llena dinámicamente -->
+                    </div>
+                </div>
+
+                <!-- Botón para compartir por WhatsApp -->
+                <div class="text-center mt-4">
+                    <button type="button" class="ios-button ios-button-primary mb-3" onclick="abrirWhatsApp()">
+                        📱 Abrir WhatsApp
+                    </button>
+                    <button type="button" class="ios-button ios-button-secondary mb-3" onclick="generarTextoWhatsApp()">
+                        📋 Ver/Copiar Texto
+                    </button>
+                    <br>
+                    <button type="button" class="ios-button ios-button-secondary" style="font-size: 18px; padding: 14px 28px;" onclick="nuevaCalculacion()">
+                        🔄 Nueva Calculación
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar texto de WhatsApp -->
+    <div id="whatsappModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📱 Resumen para WhatsApp</h3>
+                <button type="button" class="close-modal" onclick="cerrarModalWhatsApp()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="text-sm text-gray-600 mb-3">Copia este texto y compártelo por WhatsApp:</p>
+                <textarea id="textoWhatsApp" readonly></textarea>
+                <div class="modal-actions">
+                    <button type="button" class="ios-button ios-button-primary" onclick="copiarTextoWhatsApp()">
+                        📋 Copiar Texto
+                    </button>
+                    <button type="button" class="ios-button ios-button-secondary" onclick="cerrarModalWhatsApp()">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
