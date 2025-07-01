@@ -42,8 +42,13 @@
                                 <option value="8">8 personas</option>
                                 <option value="9">9 personas</option>
                                 <option value="10">10 personas</option>
+                                <option value="11">11 personas</option>
+                                <option value="12">12 personas</option>
+                                <option value="13">13 personas</option>
+                                <option value="14">14 personas</option>
+                                <option value="15">15 personas</option>
                             </select>
-                            <div class="ios-helper-text">Mínimo 2 personas, máximo 10</div>
+                            <div class="ios-helper-text">Mínimo 2 personas, máximo 15</div>
                         </div>
 
                         <button type="button" class="ios-button ios-button-primary w-100" onclick="handleStep1()">
@@ -72,19 +77,13 @@
                         </div>
                     </div>
 
-                    <!-- Paso 3: Ingresar gastos -->
-                    <div id="seccionGastos" style="display: none;">
+                    <!-- Paso 3: Ingresar montos -->
+                    <div id="seccionMontos" style="display: none;">
                         <div class="ios-divider"></div>
                         <h2 class="ios-title-3 mb-4">📊 Registro de Gastos</h2>
                         
-                        <div id="gastosContainer"></div>
+                        <div id="personasContainer"></div>
 
-                        <button type="button" class="ios-button ios-button-secondary w-100 mb-3" onclick="addGasto()">
-                            + Agregar otro gasto
-                        </button>
-                        
-                        <div class="ios-divider"></div>
-                        
                         <div class="mt-4">
                             <button type="button" class="ios-button ios-button-secondary w-100 mb-3" onclick="showStep2()">
                                 ← Volver
