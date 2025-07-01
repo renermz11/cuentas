@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Gastos Compartidos - División de Cuentas</title>
+    <title>Calculadora de Gastos Compartidos - División de Cuentas del Chiz</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,10 +11,10 @@
         <!-- Header -->
         <div class="ios-header fade-in" id="mainHeader">
             <h1 class="ios-title-1 mb-2" id="headerTitle">
-                División de Cuentas
+                División de Cuentas del Chiz
             </h1>
             <p class="ios-body mb-0" id="headerSubtitle">
-                Para yopes que no saben cómo dividir gastos
+                Para yopes que no saben cómo dividir gastos 
             </p>
         </div>
 
@@ -28,25 +28,25 @@
                     
                     <!-- Paso 1: Número de personas -->
                     <div id="seccionInicial">
-                        <h2 class="ios-title-3 mb-4">Número de Personas</h2>
+                        <h2 class="ios-title-3 mb-4">Número de Indiogenas</h2>
                         
                         <div class="ios-form-group">
                             <select class="ios-input ios-select" id="numeroPersonas" required>
                                 <option value="">Selecciona el número</option>
-                                <option value="2">2 personas</option>
-                                <option value="3">3 personas</option>
-                                <option value="4">4 personas</option>
-                                <option value="5">5 personas</option>
-                                <option value="6">6 personas</option>
-                                <option value="7">7 personas</option>
-                                <option value="8">8 personas</option>
-                                <option value="9">9 personas</option>
-                                <option value="10">10 personas</option>
-                                <option value="11">11 personas</option>
-                                <option value="12">12 personas</option>
-                                <option value="13">13 personas</option>
-                                <option value="14">14 personas</option>
-                                <option value="15">15 personas</option>
+                                <option value="2">2 </option>
+                                <option value="3">3 </option>
+                                <option value="4">4 </option>
+                                <option value="5">5 </option>
+                                <option value="6">6 </option>
+                                <option value="7">7 </option>
+                                <option value="8">8 </option>
+                                <option value="9">9 </option>
+                                <option value="10">10 </option>
+                                <option value="11">11 </option>
+                                <option value="12">12 </option>
+                                <option value="13">13 </option>
+                                <option value="14">14 </option>
+                                <option value="15">15 </option>
                             </select>
                             <div class="ios-helper-text">Mínimo 2 personas, máximo 15</div>
                         </div>
@@ -58,14 +58,12 @@
 
                     <!-- Paso 2: Ingresar nombres -->
                     <div id="seccionNombres" style="display: none;">
-                        <div class="ios-divider"></div>
-                        <h2 class="ios-title-3 mb-4">Registro de Participantes</h2>
+                        
+                        <h2 class="ios-title-3 mb-4">Introducir Nombres</h2>
                         
                         <div id="camposNombres"></div>
                         
-                        <div class="ios-footnote mb-3" style="color: var(--text-muted);">
-                            Los nombres aparecerán en el siguiente paso para ingresar los montos
-                        </div>
+                        
 
                         <div class="mt-4">
                             <button type="button" class="ios-button ios-button-secondary w-100 mb-3" onclick="showStep1()">
@@ -79,8 +77,7 @@
 
                     <!-- Paso 3: Ingresar montos -->
                     <div id="seccionMontos" style="display: none;">
-                        <div class="ios-divider"></div>
-                        <h2 class="ios-title-3 mb-4">📊 Registro de Gastos</h2>
+                        <h2 class="ios-title-3 mb-4">Monto aportado individualmente</h2>
                         
                         <div id="personasContainer"></div>
 
@@ -89,7 +86,7 @@
                                 ← Volver
                             </button>
                             <button type="button" class="ios-button ios-button-primary w-100" onclick="handleStep3()">
-                                🧮 Calcular División
+                                Calcular Movimientos
                             </button>
                         </div>
                     </div>
@@ -100,9 +97,7 @@
         <!-- Resultados -->
         <div class="ios-card fade-in" style="margin-top: 24px; display: none;" id="resultadosCard">
             <div class="ios-card-content">
-                <h2 class="text-center ios-title-3 mb-3" style="color: var(--text-primary);">
-                    Resultados 
-                </h2>
+  
 
                 <!-- Resumen General más compacto -->
                 <div class="resumen-general" id="resumenGeneral">
@@ -115,7 +110,7 @@
                 </div>
 
                 <!-- Resumen Compacto de Balances -->
-                <h3 class="ios-headline mb-2">💳 Resumen de Participantes</h3>
+                <h3 class="ios-headline mb-2">Resumen</h3>
                 <div id="balancesContainer">
                     <!-- Se llena dinámicamente -->
                 </div>
@@ -123,7 +118,7 @@
                 <!-- Sección de Detalles Expandible -->
                 <div class="details-section">
                     <div class="details-toggle" onclick="toggleDetails()">
-                        <span class="details-toggle-text">📊 Ver Detalles Completos</span>
+                        <span class="details-toggle-text">Ver Detalles Completos</span>
                         <span class="details-toggle-icon">▼</span>
                     </div>
                     
@@ -132,13 +127,10 @@
                     </div>
                 </div>
 
-                <!-- Botón para compartir por WhatsApp -->
+                <!-- Botones de acción -->
                 <div class="text-center mt-4">
-                    <button type="button" class="ios-button ios-button-primary mb-3" onclick="openWhatsApp()">
-                        📱 Abrir WhatsApp
-                    </button>
                     <button type="button" class="ios-button ios-button-secondary mb-3" onclick="shareWhatsApp()">
-                        📋 Ver/Copiar Texto
+                        📋 Ver Texto
                     </button>
                     <br>
                     <button type="button" class="ios-button ios-button-secondary" style="font-size: 18px; padding: 14px 28px;" onclick="nuevaCalculacion()">
@@ -149,15 +141,15 @@
         </div>
     </div>
 
-    <!-- Modal para mostrar texto de WhatsApp -->
+    <!-- Modal para mostrar texto del resumen -->
     <div id="whatsappModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>📱 Resumen para WhatsApp</h3>
+                <h3>� Resumen de la Calculación</h3>
                 <button type="button" class="close-modal" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <p class="text-sm text-gray-600 mb-3">Copia este texto y compártelo por WhatsApp:</p>
+                <p class="text-sm text-gray-600 mb-3">Copia este texto y compártelo como desees:</p>
                 <textarea id="textoWhatsApp" readonly></textarea>
                 <div class="modal-actions">
                     <button type="button" class="ios-button ios-button-primary" onclick="copyText()">

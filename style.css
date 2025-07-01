@@ -199,9 +199,9 @@ body {
 
 .ios-input-group-text {
     padding: 16px 18px;
-    background: var(--gradient-accent);
+    background: green;
     border-right: 1px solid var(--border-light);
-    color: var(--text-inverse);
+    color: white;
     display: flex;
     align-items: center;
     font-weight: 700;
@@ -553,9 +553,9 @@ body {
 }
 
 .balance-card-title {
-    font-size: 15px;
+    font-size: 25px;
     font-weight: 600;
-    color: var(--text-primary);
+    color: white;
     margin: 0;
 }
 

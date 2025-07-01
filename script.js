@@ -128,7 +128,7 @@ function showStep2() {
         const div = document.createElement('div');
         div.className = 'ios-form-group';
         div.innerHTML = `
-            <label for="nombre_${i}" class="ios-label">Participante ${i + 1}</label>
+            <label for="nombre_${i}" class="ios-label">🧀 Yope ${i + 1}</label>
             <input type="text" 
                    id="nombre_${i}" 
                    class="ios-input" 
@@ -192,15 +192,15 @@ function showStep3() {
         personaDiv.style.animationDelay = `${i * 0.1}s`;
         
         personaDiv.innerHTML = `
-            <h4 class="ios-headline mb-3" style="text-align: center; color: var(--text-secondary); font-weight: 700;">
-                👤 ${appState.personas[i].nombre}
+            <h4 class="ios-headline mb-3" style="text-align: center; color: white; font-weight: 700;">
+                🧀 ${appState.personas[i].nombre}
             </h4>
             
             <!-- Checkbox principal para "No realizó pagos" -->
-            <div class="ios-checkbox mb-3" style="border: 1px solid var(--error); background: rgba(239, 68, 68, 0.1);" onclick="toggleNoPago(${i})">
+            <div class="ios-checkbox mb-3" style=" background: rgba(239, 68, 68, 0.1);" onclick="toggleNoPago(${i})">
                 <input type="checkbox" id="noPago${i}" ${appState.personas[i].noPago ? 'checked' : ''}>
-                <label class="ios-checkbox-label" for="noPago${i}" style="font-size: 14px; font-weight: 600; color: var(--error);">
-                    🚫 No realizó pagos
+                <label class="ios-checkbox-label" for="noPago${i}" style="font-size: 14px; font-weight: 600; color: white;">
+                    🚫 No ha pagado nada 🚫
                 </label>
             </div>
             
@@ -220,7 +220,7 @@ function showStep3() {
                                oninput="validarMonto(${i})" 
                                ${appState.personas[i].noPago ? 'disabled' : ''}>
                     </div>
-                    <div class="ios-helper-text">Ingresa el monto que pagó esta persona (obligatorio si no marca "No realizó pagos")</div>
+                    <div class="ios-helper-text">Ingresa el monto que pagó esta persona (si no, marca "No realizó pagos")</div>
                     <div id="errorMonto${i}" class="ios-helper-text" style="color: var(--error); display: none; font-weight: 600;">
                         ⚠️ El monto no puede ser negativo
                     </div>
@@ -240,7 +240,7 @@ function showStep3() {
                     <input type="text" 
                            class="ios-input" 
                            id="etiqueta${i}" 
-                           placeholder="Ej: Cena, gasolina, etc."
+                           placeholder="Ej: Carrizo, Toros, Tavos Pipsha, etc."
                            value="${appState.personas[i].etiqueta || ''}">
                 </div>
             </div>
@@ -473,7 +473,7 @@ function calcularLiquidaciones(balances) {
 
 // Mostrar resultados (idéntico a Laravel)
 function mostrarResultados(totalGastado, porPersona, balances, liquidaciones) {
-    updateHeader(true, 'Resultados', 'Aquí están los balances y transferencias necesarias');
+    updateHeader(true, 'Resultados', 'Balances y transferencias necesarias');
     
     // Ocultar formulario y mostrar resultados
     document.getElementById('mainCard').style.display = 'none';
@@ -487,11 +487,11 @@ function mostrarResultados(totalGastado, porPersona, balances, liquidaciones) {
         </div>
         <div class="resultado-card">
             <div class="ios-headline">${appState.numPersonas}</div>
-            <div class="ios-footnote">Personas</div>
+            <div class="ios-footnote">Yopes</div>
         </div>
         <div class="resultado-card">
             <div class="ios-headline">$${porPersona.toFixed(2)}</div>
-            <div class="ios-footnote">Por Persona</div>
+            <div class="ios-footnote">Por piocha</div>
         </div>
     `;
     
@@ -499,27 +499,27 @@ function mostrarResultados(totalGastado, porPersona, balances, liquidaciones) {
     if (liquidaciones.length > 0) {
         document.getElementById('transferenciasSection').innerHTML = `
             <h3 class="transfers-title">
-                💸 Transferencias Necesarias
+                Movimientos Necesarios
             </h3>
             ${liquidaciones.map(liquidacion => `
                 <div class="movimiento-card">
-                    <strong>${liquidacion.de}</strong> debe transferir 
+                    <strong>🧀 ${liquidacion.de}</strong> debe transferir 
                     <strong>$${liquidacion.monto.toFixed(2)}</strong> 
-                    a <strong>${liquidacion.para}</strong>
+                    a <strong>🧀 ${liquidacion.para}</strong>
                 </div>
             `).join('')}
             
             <div class="ios-success text-center mt-3">
-                <strong>Completando estas transferencias se balancearán todas las cuentas</strong>
+                <strong>Así ya quedan todos a mano, indios.</strong>
             </div>
         `;
     } else {
         document.getElementById('transferenciasSection').innerHTML = `
             <h3 class="transfers-title">
-                ✅ Estado de Cuentas
+                Cuentas
             </h3>
             <div class="ios-success text-center">
-                <strong>¡Todos los participantes están balanceados!</strong><br>
+                
                 No se requieren transferencias adicionales
             </div>
         `;
@@ -529,7 +529,7 @@ function mostrarResultados(totalGastado, porPersona, balances, liquidaciones) {
     document.getElementById('balancesContainer').innerHTML = balances.map(balance => `
         <div class="balance-card">
             <div class="balance-info">
-                <span class="balance-name">👤 ${balance.nombre}</span>
+                <span class="balance-name">🧀 ${balance.nombre}</span>
                 <span class="balance-amount">Pagó $${balance.pago.toFixed(2)}</span>
             </div>
             ${balance.status === 'creditor' ? 
@@ -545,7 +545,7 @@ function mostrarResultados(totalGastado, porPersona, balances, liquidaciones) {
     document.getElementById('detailsContent').innerHTML = balances.map(balance => `
         <div class="balance-card-expanded">
             <div class="balance-card-header">
-                <h4 class="balance-card-title">👤 ${balance.nombre}</h4>
+                <h4 class="balance-card-title">🧀 ${balance.nombre}</h4>
             </div>
             
             <div class="balance-details">
@@ -590,12 +590,12 @@ function toggleDetails() {
     if (content.classList.contains('show')) {
         content.classList.remove('show');
         toggle.classList.remove('expanded');
-        text.textContent = '📊 Ver Detalles Completos';
+        text.textContent = 'Ver Detalles Completos';
         icon.textContent = '▼';
     } else {
         content.classList.add('show');
         toggle.classList.add('expanded');
-        text.textContent = '📊 Ocultar Detalles';
+        text.textContent = 'Ocultar Detalles';
         icon.textContent = '▲';
     }
 }
@@ -611,7 +611,7 @@ function nuevaCalculacion() {
     showStep1();
 }
 
-// Compartir por WhatsApp
+// Mostrar texto del resumen
 function shareWhatsApp() {
     const totalGastado = appState.personas.reduce((sum, persona) => sum + persona.monto, 0);
     const porPersona = totalGastado / appState.numPersonas;
@@ -642,7 +642,7 @@ function shareWhatsApp() {
         });
         mensaje += `\n`;
     } else {
-        mensaje += `✅ *¡Todas las cuentas están equilibradas!*\n\n`;
+        mensaje += `✅ *Cuenta dividida*\n\n`;
     }
     
     mensaje += `*DETALLE POR PERSONA:*\n`;
@@ -660,43 +660,6 @@ function shareWhatsApp() {
     elements.modal.style.display = 'block';
 }
 
-// Abrir WhatsApp
-function openWhatsApp() {
-    shareWhatsApp(); // Primero generar el texto
-    const mensaje = elements.modalText.value;
-    const mensajeCodificado = encodeURIComponent(mensaje);
-    
-    // Detectar si es móvil para usar la URL correcta
-    const esMobil = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    let url;
-    if (esMobil) {
-        // Para móviles: usar whatsapp:// que abre la app directamente
-        url = `whatsapp://send?text=${mensajeCodificado}`;
-    } else {
-        // Para escritorio: usar web.whatsapp.com
-        url = `https://web.whatsapp.com/send?text=${mensajeCodificado}`;
-    }
-    
-    // Intentar abrir WhatsApp
-    const enlace = document.createElement('a');
-    enlace.href = url;
-    enlace.target = '_blank';
-    enlace.click();
-    
-    // Fallback: si no funciona en móvil, mostrar el modal para copiar
-    if (esMobil) {
-        setTimeout(() => {
-            const confirmacion = confirm('¿No se abrió WhatsApp?\n\nPuedes copiar el texto y pegarlo manualmente en WhatsApp.');
-            if (confirmacion) {
-                // El modal ya está abierto, solo necesitamos enfocarlo
-                elements.modalText.focus();
-                elements.modalText.select();
-            }
-        }, 1000);
-    }
-}
-
 // Copiar texto
 function copyText() {
     elements.modalText.select();
@@ -708,7 +671,7 @@ function copyText() {
         // Feedback visual
         const button = event.target;
         const originalText = button.textContent;
-        button.textContent = '✅ ¡Copiado!';
+        button.textContent = '✅ Copiado';
         button.style.background = 'var(--success)';
         
         setTimeout(() => {
@@ -738,6 +701,5 @@ window.validarMonto = validarMonto;
 window.toggleDetails = toggleDetails;
 window.nuevaCalculacion = nuevaCalculacion;
 window.shareWhatsApp = shareWhatsApp;
-window.openWhatsApp = openWhatsApp;
 window.copyText = copyText;
 window.closeModal = closeModal;
