@@ -29,8 +29,8 @@
     
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-    --gradient-accent: linear-gradient(135deg, var(--accent) 0%, #FB923C 100%);
-    --gradient-success: linear-gradient(135deg, var(--success) 0%, #34D399 100%);
+    --gradient-accent: linear-gradient(135deg, var(--accent) 0%, #e0c15a 100%);
+    --gradient-success: linear-gradient(135deg, var(--success) 0%, #1e7e5a 100%);
     --gradient-card: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hover) 100%);
     
     /* Shadows */
