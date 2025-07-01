@@ -631,12 +631,12 @@ function shareWhatsApp() {
     
     const liquidaciones = calcularLiquidaciones(balances);
     
-    let mensaje = `🧾 *RESUMEN DE GASTOS COMPARTIDOS*\n\n`;
-    mensaje += `💰 *Total gastado:* $${totalGastado.toFixed(2)}\n`;
-    mensaje += `👥 *Por persona:* $${porPersona.toFixed(2)}\n\n`;
+    let mensaje = `*RESUMEN DE GASTOS COMPARTIDOS*\n\n`;
+    mensaje += `Total gastado: $${totalGastado.toFixed(2)}\n`;
+    mensaje += `Por persona: $${porPersona.toFixed(2)}\n\n`;
     
     if (liquidaciones.length > 0) {
-        mensaje += `💸 *TRANSFERENCIAS NECESARIAS:*\n`;
+        mensaje += `*TRANSFERENCIAS NECESARIAS:*\n`;
         liquidaciones.forEach(t => {
             mensaje += `• ${t.de} → ${t.para}: $${t.monto.toFixed(2)}\n`;
         });
@@ -645,16 +645,15 @@ function shareWhatsApp() {
         mensaje += `✅ *¡Todas las cuentas están equilibradas!*\n\n`;
     }
     
-    mensaje += `📊 *DETALLE POR PERSONA:*\n`;
+    mensaje += `*DETALLE POR PERSONA:*\n`;
     balances.forEach((balance) => {
-        const status = balance.balance > 0.01 ? '💚' : balance.balance < -0.01 ? '❤️' : '⚖️';
-        mensaje += `${status} ${balance.nombre}: `;
+        mensaje += `• ${balance.nombre}: `;
         mensaje += `Pagó $${balance.pago.toFixed(2)} | `;
         mensaje += `Debe $${balance.debe_pagar.toFixed(2)} | `;
         mensaje += `Balance $${balance.balance.toFixed(2)}\n`;
     });
     
-    mensaje += `\n📱 _Calculado con la Calculadora de Gastos Compartidos_`;
+    mensaje += `\n_Calculado con División de Gastos_`;
     
     // Mostrar modal
     elements.modalText.value = mensaje;
@@ -666,8 +665,36 @@ function openWhatsApp() {
     shareWhatsApp(); // Primero generar el texto
     const mensaje = elements.modalText.value;
     const mensajeCodificado = encodeURIComponent(mensaje);
-    const url = `https://wa.me/?text=${mensajeCodificado}`;
-    window.open(url, '_blank');
+    
+    // Detectar si es móvil para usar la URL correcta
+    const esMobil = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    let url;
+    if (esMobil) {
+        // Para móviles: usar whatsapp:// que abre la app directamente
+        url = `whatsapp://send?text=${mensajeCodificado}`;
+    } else {
+        // Para escritorio: usar web.whatsapp.com
+        url = `https://web.whatsapp.com/send?text=${mensajeCodificado}`;
+    }
+    
+    // Intentar abrir WhatsApp
+    const enlace = document.createElement('a');
+    enlace.href = url;
+    enlace.target = '_blank';
+    enlace.click();
+    
+    // Fallback: si no funciona en móvil, mostrar el modal para copiar
+    if (esMobil) {
+        setTimeout(() => {
+            const confirmacion = confirm('¿No se abrió WhatsApp?\n\nPuedes copiar el texto y pegarlo manualmente en WhatsApp.');
+            if (confirmacion) {
+                // El modal ya está abierto, solo necesitamos enfocarlo
+                elements.modalText.focus();
+                elements.modalText.select();
+            }
+        }, 1000);
+    }
 }
 
 // Copiar texto
